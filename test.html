@@ -4,107 +4,261 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BOGO Offer</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      background: #f9fafb;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #f06292;
+      margin-bottom: 20px;
+    }
+
+    .option-card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 16px;
+      position: relative;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .option-card.expanded {
+      background: #fff0f5;
+    }
+
+    .option-card .tag {
+  position: absolute;
+  top: -2px; /* moved down from -10px */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f06292;
+  color: #fff;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 4px 4px 0 0;
+}
+
+
+    .option-card label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: white;
+    }
+
+    .badge.pink { background: #f48fb1; }
+    .badge.red { background: #e57373; }
+
+    .price {
+      font-weight: bold;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .old-price {
+      font-weight: normal;
+      font-size: 12px;
+      text-decoration: line-through;
+      color: #888;
+      margin-left: 10px;
+    }
+
+    .desc {
+      color: #888;
+      font-size: 13px;
+    }
+
+    .selectors {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .option-card.expanded .selectors {
+      display: block;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .row label {
+      width: 20px;
+    }
+
+    select {
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0;
+    }
+
+    .free {
+      color: #f06292;
+    }
+
+    .cart-btn {
+      width: 100%;
+      background: #f06292;
+      color: white;
+      padding: 12px;
+      border: none;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .powered {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
+    }
+
+    /* Highlight the popular card with special border */
+    .option-card.popular {
+      border: 2px solid #f06292;
     }
   </style>
 </head>
-<body class="flex justify-center items-center min-h-screen">
-  <div class="bg-white max-w-md w-full rounded-2xl shadow-xl p-6 space-y-6">
-    <h2 class="text-center text-2xl font-bold text-pink-500">YAY! It's BOGO</h2>
- 
-    <!-- 1 Unit Option -->
-    <label class="flex justify-between items-center border rounded-xl p-4 cursor-pointer hover:shadow-md transition">
-      <div class="flex items-start gap-3">
-        <input type="radio" name="unit" class="mt-1 accent-pink-500" />
-        <div>
-          <div class="text-lg font-medium">1 Unit <span class="text-xs text-white bg-pink-500 rounded px-2 py-0.5 ml-2">10% Off</span></div>
-          <p class="text-sm text-gray-500">Standard Price</p>
-        </div>
+<body>
+
+  <div class="container">
+    <h2>YAY! It’s BOGO</h2>
+
+    <form id="offerForm">
+      <!-- Option 1 -->
+      <div class="option-card" data-units="1">
+        <label>
+          <input type="radio" name="unit" value="1" data-price="10">
+          <span class="unit">1 Unit</span>
+          <span class="badge pink">10% Off</span>
+        </label>
+        <div class="price">$10.00 USD <span class="old-price">$24.00 USD</span></div>
+        <div class="desc">Standard Price</div>
+        <div class="selectors"></div>
       </div>
-      <div class="text-right">
-        <p class="font-semibold text-lg">$10.00 USD</p>
-        <p class="text-sm text-gray-400 line-through">$24.00 USD</p>
+
+      <!-- Option 2 - MOST POPULAR -->
+      <div class="option-card popular" data-units="2">
+        <div class="tag">MOST POPULAR</div>
+        <label>
+          <input type="radio" name="unit" value="2" data-price="18">
+          <span class="unit">2 Unit</span>
+          <span class="badge red">20% Off</span>
+        </label>
+        <div class="price">$18.00 USD <span class="old-price">$24.00 USD</span></div>
+        <div class="selectors"></div>
       </div>
-    </label>
- 
-    <!-- 2 Unit Option (Most Popular) -->
-    <label class="relative border-2 border-pink-500 rounded-xl p-4 cursor-pointer shadow-md transition">
-      <span class="absolute -top-3 right-3 bg-pink-500 text-white text-xs font-semibold px-3 py-0.5 rounded-t-md">MOST POPULAR</span>
-      <div class="flex justify-between items-center mb-4">
-        <div class="flex items-start gap-3">
-          <input type="radio" name="unit" class="mt-1 accent-pink-500" />
-          <div>
-            <div class="text-lg font-medium">2 Unit <span class="text-xs text-white bg-pink-500 rounded px-2 py-0.5 ml-2">20% Off</span></div>
-          </div>
-        </div>
-        <div class="text-right">
-          <p class="font-semibold text-lg">$18.00 USD</p>
-          <p class="text-sm text-gray-400 line-through">$24.00 USD</p>
-        </div>
+
+      <!-- Option 3 -->
+      <div class="option-card" data-units="3">
+        <label>
+          <input type="radio" name="unit" value="3" data-price="24">
+          <span class="unit">3 Unit</span>
+          <span class="badge red">30% Off</span>
+        </label>
+        <div class="price">$24.00 USD <span class="old-price">$24.00 USD</span></div>
+        <div class="selectors"></div>
       </div>
- 
-      <!-- Dropdowns for Size and Colour -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs text-gray-600 mb-1">#1 Size</label>
-          <select class="w-full border rounded-lg px-3 py-2 text-sm">
-            <option>S</option>
-            <option>M</option>
-            <option>L</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs text-gray-600 mb-1">#1 Colour</label>
-          <select class="w-full border rounded-lg px-3 py-2 text-sm">
-            <option>Black</option>
-            <option>White</option>
-            <option>Blue</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs text-gray-600 mb-1">#2 Size</label>
-          <select class="w-full border rounded-lg px-3 py-2 text-sm">
-            <option>S</option>
-            <option>M</option>
-            <option>L</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs text-gray-600 mb-1">#2 Colour</label>
-          <select class="w-full border rounded-lg px-3 py-2 text-sm">
-            <option>Black</option>
-            <option>White</option>
-            <option>Blue</option>
-          </select>
-        </div>
+
+      <div class="footer">
+        <span class="free">Free Delivery</span>
+        <span class="total">Total : <strong id="totalPrice">$0.00 USD</strong></span>
       </div>
-    </label>
- 
-    <!-- 3 Unit Option -->
-    <label class="flex justify-between items-center border rounded-xl p-4 cursor-pointer hover:shadow-md transition">
-      <div class="flex items-start gap-3">
-        <input type="radio" name="unit" class="mt-1 accent-pink-500" />
-        <div>
-          <div class="text-lg font-medium">3 Unit <span class="text-xs text-white bg-pink-500 rounded px-2 py-0.5 ml-2">30% Off</span></div>
-        </div>
-      </div>
-      <div class="text-right">
-        <p class="font-semibold text-lg">$24.00 USD</p>
-        <p class="text-sm text-gray-400 line-through">$24.00 USD</p>
-      </div>
-    </label>
- 
-    <div class="text-pink-500 text-sm text-left">Free Delivery</div>
-    <div class="text-right text-lg font-bold">Total: $18.00 USD</div>
- 
-    <button class="w-full bg-pink-500 hover:bg-pink-600 transition text-white py-3 rounded-xl text-lg font-semibold shadow-md">
-      + Add to Cart
-    </button>
- 
-    <p class="text-center text-xs text-gray-400">@ Powered by Pumper</p>
+
+      <button type="submit" class="cart-btn">+ Add to Cart</button>
+    
+    </form>
   </div>
+
+  <script>
+    const radios = document.querySelectorAll('input[name="unit"]');
+    const cards = document.querySelectorAll('.option-card');
+
+    function generateSelectors(container, count) {
+      container.innerHTML = '';
+      for (let i = 1; i <= count; i++) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <label>#${i}</label>
+          <select name="size-${i}">
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+          </select>
+          <select name="color-${i}">
+            <option>Black</option>
+            <option>White</option>
+            <option>Blue</option>
+          </select>
+        `;
+        container.appendChild(row);
+      }
+    }
+
+    radios.forEach(radio => {
+      radio.addEventListener('change', function () {
+        const selectedCard = this.closest('.option-card');
+        const units = parseInt(selectedCard.getAttribute('data-units'));
+        const price = this.getAttribute('data-price');
+
+        // Remove expanded from all
+        cards.forEach(card => {
+          card.classList.remove('expanded');
+        });
+
+        // Expand selected
+        selectedCard.classList.add('expanded');
+        const selectorsDiv = selectedCard.querySelector('.selectors');
+        generateSelectors(selectorsDiv, units);
+
+        // Update total
+        document.getElementById('totalPrice').textContent = `$${price}.00 USD`;
+      });
+    });
+
+    // Auto-select first radio
+    radios[0].checked = true;
+    radios[0].dispatchEvent(new Event('change'));
+
+    // Prevent form submission
+    document.getElementById('offerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("Added to Cart!");
+    });
+  </script>
 </body>
 </html>
